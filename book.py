@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
 
-# Parse the XML
 tree = ET.parse('book.xml')
 root = tree.getroot()
 
@@ -29,9 +28,26 @@ for book in root.findall('book'):
 if not found:
     print(f'\nBook titled "{target_title}" not found.\n')
 
+add_new = input("Do you want to add a new book? (yes/no): ").strip().lower()
+
+if add_new == "yes":
+    new_title = input("Enter book title: ")
+    new_author = input("Enter author name: ")
+    new_genre = input("Enter genre: ")
+    new_description = input("Enter description: ")
+
+    new_book = ET.Element("book")
+    ET.SubElement(new_book, "title").text = new_title
+    ET.SubElement(new_book, "author").text = new_author
+    ET.SubElement(new_book, "genre").text = new_genre
+    ET.SubElement(new_book, "description").text = new_description
+
+    root.append(new_book)
+    print(f'\nNew book titled "{new_title}" has been added.\n')
+
 tree.write('book.xml')
 
-print("Remaining books:")
+print("Updated book list:")
 for book in root.findall('book'):
     title = book.find('title').text
     author = book.find('author').text
